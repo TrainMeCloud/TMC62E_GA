@@ -1,0 +1,41 @@
+{
+	"name": "AzureSqlTable22",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"paramschemaname": {
+				"type": "string"
+			},
+			"paramtablename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "GenderID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Gender",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().paramschemaname",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().paramtablename",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

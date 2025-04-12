@@ -1,0 +1,9 @@
+{
+	"name": "gamingconsoleadf",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "90eaee31-942d-4839-b219-5b29fbd2f0ff",
+		"tenantId": "080ddedf-6bfa-4721-b63d-f6007396ccc6"
+	}
+}

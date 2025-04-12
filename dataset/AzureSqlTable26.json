@@ -1,0 +1,32 @@
+{
+	"name": "AzureSqlTable26",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "OccupationKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OccupationID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Occupation",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Dimension_Occupation"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

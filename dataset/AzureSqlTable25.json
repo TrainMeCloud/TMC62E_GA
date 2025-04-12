@@ -1,0 +1,53 @@
+{
+	"name": "AzureSqlTable25",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CategoryKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CountryKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OccupationKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "GenderKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DateKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TaxAmount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "SalesAmount",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Fact_FinalData"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

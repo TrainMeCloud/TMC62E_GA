@@ -1,0 +1,169 @@
+{
+	"name": "Fact_FinalDatadf",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable23",
+						"type": "DatasetReference"
+					},
+					"name": "stagingsource"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable24",
+						"type": "DatasetReference"
+					},
+					"name": "dimgendersource"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable26",
+						"type": "DatasetReference"
+					},
+					"name": "dimoccupationsource"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable27",
+						"type": "DatasetReference"
+					},
+					"name": "dimcountrysource"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable28",
+						"type": "DatasetReference"
+					},
+					"name": "dimcategorysource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable25",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "genderlookup"
+				},
+				{
+					"name": "occupationlookup"
+				},
+				{
+					"name": "countrylookup"
+				},
+				{
+					"name": "categorylookup"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          SalesAmount as double,",
+				"          TaxAmt as double,",
+				"          SaleDate as timestamp,",
+				"          CustomerGender as string,",
+				"          CustomerOccupation as string,",
+				"          City as string,",
+				"          State as string,",
+				"          Country as string,",
+				"          SubCategory as string,",
+				"          Category as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> stagingsource",
+				"source(output(",
+				"          GenderKey as integer,",
+				"          GenderID as integer,",
+				"          Gender as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimgendersource",
+				"source(output(",
+				"          OccupationKey as integer,",
+				"          OccupationID as integer,",
+				"          Occupation as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimoccupationsource",
+				"source(output(",
+				"          CountryKey as integer,",
+				"          CountryID as integer,",
+				"          City as string,",
+				"          State as string,",
+				"          Country as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimcountrysource",
+				"source(output(",
+				"          CategoryKey as integer,",
+				"          CategoryID as integer,",
+				"          SubCategory as string,",
+				"          Category as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimcategorysource",
+				"stagingsource, dimgendersource lookup(CustomerGender == Gender,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> genderlookup",
+				"genderlookup, dimoccupationsource lookup(CustomerOccupation == Occupation,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> occupationlookup",
+				"occupationlookup, dimcountrysource lookup(stagingsource@City == dimcountrysource@City,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> countrylookup",
+				"countrylookup, dimcategorysource lookup(stagingsource@SubCategory == dimcategorysource@SubCategory,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> categorylookup",
+				"categorylookup sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          CategoryKey as integer,",
+				"          CountryKey as integer,",
+				"          OccupationKey as integer,",
+				"          GenderKey as integer,",
+				"          DateKey as integer,",
+				"          TaxAmount as double,",
+				"          SalesAmount as double",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          GenderKey,",
+				"          TaxAmount = TaxAmt,",
+				"          SalesAmount,",
+				"          OccupationKey,",
+				"          CountryKey,",
+				"          CategoryKey",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

@@ -1,0 +1,36 @@
+{
+	"name": "AzureSqlTable28",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CategoryKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CategoryID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SubCategory",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Dimension_Category"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
